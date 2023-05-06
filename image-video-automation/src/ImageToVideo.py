@@ -11,13 +11,13 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
-from src.SeleniumCommon import login_using_cookie_file
+from SeleniumCommon import login_using_cookie_file
 
-class UploadYoutube(webdriver.Chrome):
+class ImageToVideo(webdriver.Chrome):
     def __init__(self):
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        super(UploadYoutube, self).__init__(options=options)
+        super(ImageToVideo, self).__init__(options=options)
         self.implicitly_wait(20)
         self.set_window_size(1920, 1080)
 
@@ -25,102 +25,74 @@ class UploadYoutube(webdriver.Chrome):
         # if self.teardown:
         self.quit()
 
-    def getYoutubeHomePage(self):
-        self.get("https://www.youtube.com")
+    def getHomePage(self):
+        self.get("https://convert.leiapix.com/")
 
-    def getYoutubeStudioPage(self):
-        self.get("https://studio.youtube.com")
+    def closePopup(self):
+        sleep(1)
+        close_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//button[@name='popup-close-button']",))) 
+        close_button.click()
 
-    def clickCreateButton(self):
-        WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "ytcp-button#create-icon"))).click()
+    def signIn(self, email, password):
+        sleep(1)
+        sign_in_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//a[@class='signInLink']",))) 
+        sign_in_button.click()
 
-    def clickUploadButton(self):
-        WebDriverWait(self, 20).until(
-        EC.element_to_be_clickable((By.XPATH, '//tp-yt-paper-item[@test-id="upload-beta"]'))).click()
+        sleep(1)
+        email_field: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//input[@name='authUsername']",))) 
+        email_field.send_keys(email)
+
+        sleep(1)
+        email_field: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//input[@name='password']",))) 
+        email_field.send_keys(password)
+
+        sleep(1)
+        submit_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//button[@type='submit']",))) 
+        submit_button.click()
+
+    def uploadImage(self, imagePath):
+        sleep(1)
+        chooseFile = self.find_element(By.XPATH, '//input[@type="file"]')
+        chooseFile.send_keys(imagePath)
 
     def inputVideoFile(self, videoPath):
         videoInput = self.find_element_by_xpath('//input[@type="file"]')
         videoInput.send_keys(videoPath)
 
-    def inputTitle(self, title):
-        titleInput: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,'//ytcp-social-suggestions-textbox[@id="title-textarea"]//div[@id="textbox"]',))) 
-        titleInput.clear()
-        titleInput.send_keys(title)
+    # def editVideo(self):
 
-    def inputDescription(self, description):
-        descriptionInput: WebElement = self.find_element_by_xpath('//ytcp-social-suggestions-textbox[@id="description-textarea"]//div[@id="textbox"]')
-        descriptionInput.send_keys(description)
+    def downloadVideo(self):
+        sleep(1)
+        share_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//div[@ng-click='shareClickHandler()']",))) 
+        share_button.click()
 
-    def inputNotMadeForKids(self):
-        WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.NAME, "VIDEO_MADE_FOR_KIDS_NOT_MFK"))).click()
+        sleep(1)
+        mp4_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//div[@class='share-buttons-container']/button[2]",))) 
+        mp4_button.click()
 
-    def inputVisibility(self):
-        for i in range(3):
-            WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.ID, "next-button"))).click()
-        WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH, "//tp-yt-paper-radio-button[@name='PUBLIC']//div[@id='offRadio']"))).click()
-
-    def waitForProcessing(self):
-        progress_label: WebElement = self.find_element_by_css_selector("span.progress-label")
-        pattern = re.compile(r"(finished processing)|(processing hd.*)|(check.*)")
-        current_progress = progress_label.get_attribute("textContent")
-        last_progress = None
-        while not pattern.match(current_progress.lower()):
-            if last_progress != current_progress:
-                logging.info(f'Current progress: {current_progress}')
-            last_progress = current_progress
-            sleep(5)
-            current_progress = progress_label.get_attribute("textContent")
-
-    def clickPublishButton(self):
-        self.find_element_by_css_selector("#step-badge-1").click()
-
-        for _ in range(2):
-            # Sometimes, the button is clickable but clicking it raises an error, so we add a "safety-sleep" here
-            sleep(5)
-            WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.ID, "next-button"))).click()
+        sleep(1)
+        save_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//div[@class='brand-button brand-button-fill']",))) 
+        save_button.click()
 
         sleep(5)
-        WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH, "//div[normalize-space()='Publish']"))).click()
+        close_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//div[@class='modal-center ng-scope']/div/div/button[1]",))) 
+        close_button.click()
 
-        # Wait for the dialog to disappear
-        sleep(5)
-        logging.info("Youtube upload is complete")
-
-    def confirm_logged_in(driver: WebDriver) -> bool:
-        """ Confirm that the user is logged in. The browser needs to be navigated to a YouTube page. """
-        try:
-            WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.ID, "avatar-btn")))
-            return True
-        except TimeoutError:
-            return False
-
-
-    def startUpload(
+    def convertImage(
             self,
-            epNumber: str,
-            epTitle: str,
-            epYoutubeLink: str,
-            videoTitle: str,
-            videoPath: bool,
+            imageFilePaths,
     ):
-        login_using_cookie_file(self, cookie_file="config/youtubeCookies.json")
+        email = "historyqueefs@gmail.com"
+        password = "QueefAlert$$69"
         self.getHomePage()
-        self.confirm_logged_in()
-        self.clickUploadButton()
-        self.file_detector = LocalFileDetector()
-        self.inputVideoFile(videoPath)
-        
-        # self.getYoutubeStudioPage()
-        # self.file_detector = LocalFileDetector()
-        # self.clickCreateButton()
-        # self.clickUploadButton()
-        # self.inputVideoFile(videoPath)
-        # self.inputTitle(videoTitle)
-        # self.inputDescription(getDescription(epNumber, epTitle, epYoutubeLink))
-        # self.inputNotMadeForKids()
-        # self.inputVisibility()
-        # self.waitForProcessing()
-        # self.clickPublishButton()
+        self.closePopup()
+        self.signIn(email, password)
+        for image in imageFilePaths:
+            self.uploadImage(image)
+            self.downloadVideo()
+            sleep(1)
+        print("done!")
+        sleep(5)
 
 def getDescription(number, title, youtubeLink) -> str:
         return """MSSP Podcast: https://bit.ly/3ubmaU9
