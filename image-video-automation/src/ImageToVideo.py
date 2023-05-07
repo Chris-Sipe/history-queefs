@@ -11,7 +11,6 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
-from SeleniumCommon import login_using_cookie_file
 
 class ImageToVideo(webdriver.Chrome):
     def __init__(self):
