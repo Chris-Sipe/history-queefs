@@ -54,10 +54,6 @@ class ImageToVideo(webdriver.Chrome):
         chooseFile = self.find_element(By.XPATH, '//input[@type="file"]')
         chooseFile.send_keys(imagePath)
 
-    def inputVideoFile(self, videoPath):
-        videoInput = self.find_element_by_xpath('//input[@type="file"]')
-        videoInput.send_keys(videoPath)
-
     # def editVideo(self):
 
     def downloadVideo(self):
