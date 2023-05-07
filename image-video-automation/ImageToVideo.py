@@ -91,16 +91,3 @@ class ImageToVideo(webdriver.Chrome):
             self.downloadVideo()
             sleep(1)
         print("done!")
-        sleep(5)
-
-def getDescription(number, title, youtubeLink) -> str:
-        return """MSSP Podcast: https://bit.ly/3ubmaU9
-Ep {epNumber} - {EpTitle}: {EpYoutubeLink}
-•
-Unofficial Clips Channel:
-Tik Tok: https://bit.ly/3wpfQv6
-Instagram: https://bit.ly/3wv9cTM
-Youtube: https://bit.ly/3KZpXKV
-Linktree: https://bit.ly/3D1nuNw
-•
-#MSSP #dawgs #MattAndShanesSecretPodcast #ShaneGillis  #comedy #podcast #comedyPodcast #podcastClips #shorts""".format(epNumber = number, EpTitle = title, EpYoutubeLink = youtubeLink)
