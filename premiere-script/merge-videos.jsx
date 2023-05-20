@@ -1,6 +1,9 @@
+// variable setup
 var project = app.project;
-var outputFilePath = "~/Documents/history-queefs/history-queefs/premiere-script";
+var outputFilePath = "C:\\Users\\chris\\OneDrive\\Documents\\history-queefs\\history-queefs\\premiere-script\\output-vid.mp4";
+var exportSettingsFilePath = "C:\\Users\\chris\\OneDrive\\Documents\\history-queefs\\history-queefs\\premiere-script\\history-queefs-preset.epr";
 var filesFolderPath = "~/Documents/history-queefs/history-queefs/premiere-script/input-vids";
+var seq;
 
 // import video files into project
 var filesFolder = new Folder(filesFolderPath);
@@ -18,12 +21,24 @@ var availableClipsArray = [];
 for (var i = 0; i < availableClipsCollection.length; i++) {
     availableClipsArray.push(availableClipsCollection[i])
 }
-var firstSeq = project.createNewSequenceFromClips("sequence 1", availableClipsArray, null);
+project.createNewSequenceFromClips("sequence 1", availableClipsArray, null);
 
-// // Export the sequence as an MP4 file
-// var exportSettings = app.encoder.createExportOptions(outputFilePath, 1080, 1920, app.encoder.ENCODE_QUALITY_HIGH);
-// exportSettings.setPresetFormat("MP4");
-// app.encoder.exportSequence(seq, outputFilePath, exportSettings);
+// get sequence
+if (project.sequences.length >= 1) {
+    seq = project.sequences[0];
+} else {
+    alert("No sequence found in the project.");
+    exit();
+}
+
+// set vertical
+var seqSettings = seq.getSettings();
+seqSettings.videoFrameWidth = 1080;
+seqSettings.videoFrameHeight = 1920;
+seq.setSettings(seqSettings);
+
+// Export the sequence as an MP4 file
+seq.exportAsMediaDirect(outputFilePath, exportSettingsFilePath, 0);
 
 function addExtraBackslash(str) {
     return str.replace(/\\/g, "\\\\");
