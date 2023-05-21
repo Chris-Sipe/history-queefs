@@ -1,11 +1,14 @@
 import discord
 import os
 import asyncio
+from dotenv import load_dotenv
 
-DISCORD_TOKEN = "MTEwOTY5MjU3NTgwOTU1NjQ4Mg.GyxYEQ.w98b6xf5tsNiqniOGE9FptGECk_91GGB8F3OVw"
 APPLICATION_ID = "1109692575809556482"
 PUBLIC_KEY = "b653b3c92769c40dce6551c50a09e43fb9bc64e6213f571f3000eba894687f2b"
 CHANNEL_ID = 1109712323066728459
+
+load_dotenv()  # Load environment variables from .env file
+DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')  # Retrieve the token from the environment
 
 client = discord.Client(command_prefix="*", intents=discord.Intents.all())
 
