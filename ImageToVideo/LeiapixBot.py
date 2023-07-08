@@ -2,6 +2,8 @@ import os, os.path
 import logging
 import re
 from time import sleep
+from dotenv import load_dotenv
+import pyautogui
 
 from selenium.webdriver.remote.file_detector import LocalFileDetector
 from selenium.webdriver.common.by import By
@@ -12,13 +14,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
 
-class ImageToVideo(webdriver.Chrome):
+class LeiapixBot(webdriver.Chrome):
     def __init__(self):
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        super(ImageToVideo, self).__init__(options=options)
+        super(LeiapixBot, self).__init__(options=options)
         self.implicitly_wait(20)
-        self.set_window_size(1920, 1080)
+        self.set_window_size(1920, 1280)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # if self.teardown:
@@ -57,9 +59,15 @@ class ImageToVideo(webdriver.Chrome):
     # def editVideo(self):
 
     def downloadVideo(self):
-        sleep(1)
+        sleep(2)
         share_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//div[@ng-click='shareClickHandler()']",))) 
         share_button.click()
+        # sleep(1)
+        # share_button = os.path.abspath("ImageToVideo/ButtonScreenshots/share.png")
+        # loc = pyautogui.locateCenterOnScreen(share_button, confidence=0.5)
+        # pyautogui.moveTo(loc)
+        # print(loc)
+        # pyautogui.click()
 
         sleep(1)
         mp4_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//div[@class='share-buttons-container']/button[2]",))) 
@@ -77,8 +85,9 @@ class ImageToVideo(webdriver.Chrome):
             self,
             imageFilePaths,
     ):
-        email = "historyqueefs@gmail.com"
-        password = "QueefAlert$$69"
+        load_dotenv() 
+        email = os.getenv('LEIAPIX_EMAIL')
+        password = os.getenv('LEIAPIX_PW')
         self.getHomePage()
         self.closePopup()
         self.signIn(email, password)
