@@ -4,11 +4,11 @@ from operator import itemgetter
 from ImageToVideo.LeiapixBot import LeiapixBot
 
 class ImageToVideo: 
-    def Convert():
+
+    def convert(self):
         # go to leiapix site and convert images to animations
-        towerImage = os.path.abspath("ImageToVideo/images/tower.png")
-        horseImage = os.path.abspath("ImageToVideo/images/horse.png")
-        images = [towerImage, horseImage]
+        images = self.getImages("ImageToVideo/images")
+
         with LeiapixBot() as leiapixBot:
             leiapixBot.convertImage(images)
 
@@ -29,3 +29,10 @@ class ImageToVideo:
         # move the most 3 recent files to the destination directory
         for f, _ in files[:3]:
             shutil.move(os.path.join(downloads_dir, f), os.path.join(destination_dir, f))
+    
+    def getImages(self, directory):
+        filePaths = []
+        for root, dirs, files in os.walk(directory):
+            for file in files:
+                filePaths.append(os.path.abspath(os.path.join(root,file)))
+        return filePaths

@@ -4,7 +4,8 @@ def main():
     # get images from text descriptions via midJourney
 
     # get animated images from images via leiapix
-    ImageToVideo.Convert()
+    imageToVideo = ImageToVideo()
+    imageToVideo.convert()
 
     # stitch together animates images into video via premiere
 
