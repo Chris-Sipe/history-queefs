@@ -8,14 +8,14 @@ class ImageToVideo:
     def convert(self):
         images = self.getImages("ImageToVideo/images")
         numImages = len(images)
-        
+
         # go to leiapix site and convert images to animations
         with LeiapixBot() as leiapixBot:
             leiapixBot.convertImage(images)
 
         # move animations from downloads to input vids folder
         downloads_dir = "C:\\Users\\chris\\Downloads"
-        destination_dir = "C:\\Users\\chris\\OneDrive\\Documents\\history-queefs\\history-queefs\\premiere-script\\input-vids"
+        destination_dir = "C:\\Users\\chris\\OneDrive\\Documents\\history-queefs\\history-queefs\\PremiereScript\\input-vids"
 
         # check if the destination directory exists
         if not os.path.isdir(destination_dir):

@@ -5,7 +5,7 @@
             "type": "extendscript-debug",
             "request": "launch",
             "name": "Merge Videos",
-            "script": "${workspaceFolder}/premiere-script/merge-videos.jsx",
+            "script": "${workspaceFolder}/PremiereScript/merge-videos.jsx",
             "hostAppSpecifier": "premierepro-23.4"
         }
     ]
