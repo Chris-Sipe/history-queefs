@@ -6,14 +6,15 @@ from ImageToVideo.LeiapixBot import LeiapixBot
 class ImageToVideo: 
 
     def convert(self):
-        # go to leiapix site and convert images to animations
         images = self.getImages("ImageToVideo/images")
-
+        numImages = len(images)
+        
+        # go to leiapix site and convert images to animations
         with LeiapixBot() as leiapixBot:
             leiapixBot.convertImage(images)
 
         # move animations from downloads to input vids folder
-        downloads_dir = "C:\\Users\\YourUsername\\Downloads"
+        downloads_dir = "C:\\Users\\chris\\Downloads"
         destination_dir = "C:\\Users\\chris\\OneDrive\\Documents\\history-queefs\\history-queefs\\premiere-script\\input-vids"
 
         # check if the destination directory exists
@@ -27,7 +28,7 @@ class ImageToVideo:
         files.sort(key=itemgetter(1), reverse=True)
 
         # move the most 3 recent files to the destination directory
-        for f, _ in files[:3]:
+        for f, _ in files[:numImages]:
             shutil.move(os.path.join(downloads_dir, f), os.path.join(destination_dir, f))
     
     def getImages(self, directory):
