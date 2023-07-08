@@ -3,7 +3,6 @@ import logging
 import re
 from time import sleep
 from dotenv import load_dotenv
-import pyautogui
 
 from selenium.webdriver.remote.file_detector import LocalFileDetector
 from selenium.webdriver.common.by import By
@@ -62,12 +61,6 @@ class LeiapixBot(webdriver.Chrome):
         sleep(2)
         share_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//div[@ng-click='shareClickHandler()']",))) 
         share_button.click()
-        # sleep(1)
-        # share_button = os.path.abspath("ImageToVideo/ButtonScreenshots/share.png")
-        # loc = pyautogui.locateCenterOnScreen(share_button, confidence=0.5)
-        # pyautogui.moveTo(loc)
-        # print(loc)
-        # pyautogui.click()
 
         sleep(1)
         mp4_button: WebElement = WebDriverWait(self, 20).until(EC.element_to_be_clickable((By.XPATH,"//div[@class='share-buttons-container']/button[2]",))) 
