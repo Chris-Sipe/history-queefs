@@ -1,8 +1,6 @@
 import os
 import time
 import pyautogui
-import json
-import subprocess
 
 class RunPremiere:
 
@@ -11,6 +9,7 @@ class RunPremiere:
         script_file = r"C:\Users\chris\OneDrive\Documents\history-queefs\history-queefs\PremiereScript\merge-videos"
         premiere_pro_exe = r"C:\Program Files\Adobe\Adobe Premiere Pro 2023\Adobe Premiere Pro.exe"
         extendScript_tab  = r"C:\Users\chris\OneDrive\Documents\history-queefs\history-queefs\PremiereScript\button-screenshots\extendscript-tab.png"
+        extendScript_tab2  = r"C:\Users\chris\OneDrive\Documents\history-queefs\history-queefs\PremiereScript\button-screenshots\extendscript-tab2.png"
         open_button  = r"C:\Users\chris\OneDrive\Documents\history-queefs\history-queefs\PremiereScript\button-screenshots\open.png"
         run_button  = r"C:\Users\chris\OneDrive\Documents\history-queefs\history-queefs\PremiereScript\button-screenshots\run.png"
         merge_videos_icon  = r"C:\Users\chris\OneDrive\Documents\history-queefs\history-queefs\PremiereScript\button-screenshots\merge-videos-desktop-icon.png"
@@ -19,7 +18,7 @@ class RunPremiere:
 
         # Open Premiere Pro
         os.startfile(premiere_pro_exe)
-        time.sleep(7)
+        time.sleep(10)
 
         # Navigate to the New Project option
         pyautogui.hotkey('ctrl', 'alt', 'n')
@@ -29,12 +28,17 @@ class RunPremiere:
         pyautogui.press('tab')  # tab over in the duplicate name menu
         time.sleep(1)
         pyautogui.press('enter')  # confirm to create
-        time.sleep(1)
+        time.sleep(3)
 
         # Open Extend Scipt window and run extend script
         self.click(extendScript_tab)
+        print("1")
+        self.click(extendScript_tab2)
+        print("2")
         self.click(open_button)
+        print("3")
         self.click(home_button)
+        print("4")
         self.click(premiere_script_button)
         pyautogui.hotkey('enter')
         time.sleep(1)
